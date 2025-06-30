@@ -1,0 +1,182 @@
+# YOLOv8 PPE Detection Project
+
+## Project Overview
+This project uses the YOLOv8 model for detecting personal protective equipment (PPE) in images and videos. The detection system is designed to identify various safety-related items and individuals in industrial environments, ensuring safety compliance and reducing workplace hazards.
+
+### Key Features:
+- Detection of multiple classes, including:
+  - Hardhat
+  - Mask
+  - NO-Hardhat
+  - NO-Mask
+  - NO-Safety Vest
+  - Person
+  - Safety Cone
+  - Safety Vest
+  - Machinery
+  - Vehicle
+- Custom dataset preparation and training.
+- Model evaluation and visualization of predictions.
+
+---
+
+## Dataset
+The dataset contains images organized into `train`, `valid`, and `test` folders. Each image has corresponding annotation files in YOLO format.
+
+### Dataset Structure:
+- **Train:**
+  - Images: 2605
+  - Labels: 2605
+- **Validation:**
+  - Images: 114
+  - Labels: 114
+- **Test:**
+  - Images: 82
+  - Labels: 82
+
+---
+
+## Configuration
+The project is controlled through the `CFG` class. Below are the main configurable parameters:
+
+### Model Parameters:
+- **BASE_MODEL**: The base YOLOv8 model to use (e.g., `yolov8s` for a small model).
+- **BASE_MODEL_WEIGHTS**: Path to the pretrained weights file for the base model.
+
+### Training Parameters:
+- **EPOCHS**: Number of training epochs (default: 50).
+- **BATCH_SIZE**: Number of samples per batch (default: 16).
+- **OPTIMIZER**: Optimization algorithm (default: Auto).
+- **LEARNING_RATE (LR)**: Initial learning rate for training (default: 1e-3).
+- **LR_FACTOR**: Final learning rate adjustment factor.
+- **WEIGHT_DECAY**: Regularization parameter to prevent overfitting.
+- **DROPOUT**: Dropout rate for training.
+- **FRACTION**: Fraction of the dataset to use for training.
+- **PATIENCE**: Early stopping patience.
+- **PROFILE**: Enable detailed profiling during training.
+- **LABEL_SMOOTHING**: Smoothing factor to handle noisy labels.
+- **SEED**: Random seed for reproducibility.
+
+### Dataset and Inference Parameters:
+- **IMGSZ**: Image size for training and inference (default: (640, 640)).
+- **DEVICE**: Device to run training/inference on (e.g., `cuda`).
+- **CONF**: Confidence threshold for detections (default: 0.30).
+
+---
+
+## Training
+The model is trained using the following workflow:
+
+1. **Data Preparation:** Ensure all images and labels are correctly organized in the YOLO format.
+2. **Training Command:**
+
+```python
+model.train(
+    data=os.path.join(CFG.OUTPUT_DIR, 'data.yaml'),
+    task='detect',
+    imgsz=(640, 640),
+    epochs=CFG.EPOCHS,
+    batch=CFG.BATCH_SIZE,
+    optimizer=CFG.OPTIMIZER,
+    lr0=CFG.LR,
+    lrf=CFG.LR_FACTOR,
+    weight_decay=CFG.WEIGHT_DECAY,
+    dropout=CFG.DROPOUT,
+    fraction=CFG.FRACTION,
+    patience=CFG.PATIENCE,
+    profile=CFG.PROFILE,
+    label_smoothing=CFG.LABEL_SMOOTHING,
+    name=f'{CFG.BASE_MODEL}_{CFG.EXP_NAME}',
+    seed=CFG.SEED,
+    val=True,
+    amp=True,
+    exist_ok=True,
+    resume=False,
+    device=0,
+    verbose=False,
+    project=None
+)
+```
+
+### Training Results:
+- Precision: 0.86892
+- Recall: 0.64027
+- mAP@50: 0.69028
+- mAP@50-95: 0.36963
+
+---
+
+## Visualization
+### Random Image Visualization:
+Display images randomly selected from the training dataset.
+```python
+plot_random_images_from_folder(folder_path, num_images=20, seed=CFG.SEED)
+```
+
+### Inference:
+Run inference on a single image:
+```python
+results = model.predict(
+    source=example_image_path,
+    conf=0.30,
+    device="cuda",
+    imgsz=(640, 640),
+    save=True,
+    save_txt=True,
+    save_conf=True,
+    exist_ok=True,
+    nms=True
+)
+```
+
+---
+
+## Requirements
+- **Python:** 3.8+
+- **Libraries:**
+  - ultralytics
+  - numpy
+  - pandas
+  - matplotlib
+  - seaborn
+  - opencv-python
+  - Pillow
+  - PyYAML
+
+Install dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+## Hardware Used
+- NVIDIA GPU with CUDA support (GPU 0: NVIDIA GeForce RTX 3060 Laptop GPU (UUID: GPU-53a27a06-233d-07b9-fc18-a603ac868ab1))
+- CUDA version: 12.6.77
+- 16GB RAM or higher
+- Processor (Intel Core i9)
+
+---
+
+## Outputs
+- Prediction results are saved in the `runs/detect/` directory.
+- Training logs and metrics are saved as `training_log_df.csv`.
+- Sample inference outputs (images/videos with detections) are provided in the `outputs/` directory.
+
+---
+
+## Limitations
+- The model may struggle with:
+  - Detecting partially obscured PPE items.
+  - Low-light or visually complex environments.
+- Limited generalization for unseen environments without retraining.
+
+---
+
+## Future Work
+- Expanding the dataset to include more diverse scenarios.
+- Improving recall and precision through advanced fine-tuning.
+- Integrating real-time deployment for industrial monitoring systems.
+- Adding additional PPE categories to enhance detection capabilities.
+
+---
