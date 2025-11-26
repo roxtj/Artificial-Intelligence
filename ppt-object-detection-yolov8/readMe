@@ -1,182 +1,170 @@
-# YOLOv8 PPE Detection Project
+# ⛑️ YOLOv8 PPE Detection & Compliance System 🚧
 
-## Project Overview
-This project uses the YOLOv8 model for detecting personal protective equipment (PPE) in images and videos. The detection system is designed to identify various safety-related items and individuals in industrial environments, ensuring safety compliance and reducing workplace hazards.
-
-### Key Features:
-- Detection of multiple classes, including:
-  - Hardhat
-  - Mask
-  - NO-Hardhat
-  - NO-Mask
-  - NO-Safety Vest
-  - Person
-  - Safety Cone
-  - Safety Vest
-  - Machinery
-  - Vehicle
-- Custom dataset preparation and training.
-- Model evaluation and visualization of predictions.
+**A deep learning solution using YOLOv8 for real-time Personal Protective Equipment (PPE) detection in industrial and construction environments.**
 
 ---
 
-## Dataset
-The dataset contains images organized into `train`, `valid`, and `test` folders. Each image has corresponding annotation files in YOLO format.
+## ✨ Project Overview
 
-### Dataset Structure:
-- **Train:**
-  - Images: 2605
-  - Labels: 2605
-- **Validation:**
-  - Images: 114
-  - Labels: 114
-- **Test:**
-  - Images: 82
-  - Labels: 82
+This project implements a state-of-the-art object detection model, **YOLOv8**, to monitor safety compliance by automatically identifying both the presence and absence of essential Personal Protective Equipment (PPE) in images and video streams.
+
+The goal is to enhance workplace safety, automate compliance checks, and minimize human error in hazard reduction.
+
+### 🔑 Key Features
+* **Real-time Detection:** High-speed inference suitable for live video streams.
+* **10-Class Classification:** Detection includes both compliance (e.g., `Hardhat`, `Safety Vest`) and non-compliance (e.g., `NO-Hardhat`, `NO-Safety Vest`) classes.
+* **Custom Training:** Model trained on a custom, diverse dataset tailored for industrial settings.
+* **Detailed Metrics:** Comprehensive evaluation using mAP, Precision, and Recall.
 
 ---
 
-## Configuration
-The project is controlled through the `CFG` class. Below are the main configurable parameters:
+## 🏷️ Detected Classes (10)
 
-### Model Parameters:
-- **BASE_MODEL**: The base YOLOv8 model to use (e.g., `yolov8s` for a small model).
-- **BASE_MODEL_WEIGHTS**: Path to the pretrained weights file for the base model.
-
-### Training Parameters:
-- **EPOCHS**: Number of training epochs (default: 50).
-- **BATCH_SIZE**: Number of samples per batch (default: 16).
-- **OPTIMIZER**: Optimization algorithm (default: Auto).
-- **LEARNING_RATE (LR)**: Initial learning rate for training (default: 1e-3).
-- **LR_FACTOR**: Final learning rate adjustment factor.
-- **WEIGHT_DECAY**: Regularization parameter to prevent overfitting.
-- **DROPOUT**: Dropout rate for training.
-- **FRACTION**: Fraction of the dataset to use for training.
-- **PATIENCE**: Early stopping patience.
-- **PROFILE**: Enable detailed profiling during training.
-- **LABEL_SMOOTHING**: Smoothing factor to handle noisy labels.
-- **SEED**: Random seed for reproducibility.
-
-### Dataset and Inference Parameters:
-- **IMGSZ**: Image size for training and inference (default: (640, 640)).
-- **DEVICE**: Device to run training/inference on (e.g., `cuda`).
-- **CONF**: Confidence threshold for detections (default: 0.30).
+| Compliance Status | Class Name | Description |
+| :--- | :--- | :--- |
+| **✅ Compliant** | `Hardhat` | Worker wearing a hardhat. |
+| | `Mask` | Worker wearing a mask. |
+| | `Safety Vest` | Worker wearing a safety vest. |
+| **❌ Non-Compliant** | `NO-Hardhat` | Worker without a hardhat. |
+| | `NO-Mask` | Worker without a mask. |
+| | `NO-Safety Vest` | Worker without a safety vest. |
+| **🏗️ Environmental**| `Person` | Detection of any human. |
+| | `Safety Cone` | Safety marker. |
+| | `Machinery` | Industrial equipment. |
+| | `Vehicle` | On-site transportation. |
 
 ---
 
-## Training
-The model is trained using the following workflow:
+## 📊 Dataset & Statistics
 
-1. **Data Preparation:** Ensure all images and labels are correctly organized in the YOLO format.
-2. **Training Command:**
+The model was trained on a custom dataset split into standard YOLO format (`train`, `valid`, `test`). Each image includes corresponding annotation files.
+
+| Split | Images | Labels (Annotations) |
+| :--- | :---: | :---: |
+| **Train** | 2605 | 2605 |
+| **Validation** | 114 | 114 |
+| **Test** | 82 | 82 |
+
+---
+
+## ⚙️ Configuration & Parameters
+
+The training environment and model behavior are managed via the central `CFG` class.
+
+| Parameter Category | Example Parameter | Default Value | Description |
+| :--- | :--- | :--- | :--- |
+| **Model** | `BASE_MODEL` | `yolov8s.pt` | The base YOLOv8 architecture weights (e.g., small). |
+| | `IMGSZ` | `(640, 640)` | Image size for training and inference. |
+| **Training** | `EPOCHS` | `50` | Number of training iterations. |
+| | `BATCH_SIZE` | `16` | Samples processed per batch. |
+| | `LEARNING_RATE (LR)` | `1e-3` | Initial learning rate. |
+| | `PATIENCE` | *(Auto)* | Early stopping patience to prevent overfitting. |
+| **Inference** | `CONF` | `0.30` | Confidence threshold for final bounding box display. |
+| | `DEVICE` | `cuda` | Hardware target for acceleration (e.g., `cuda` or `0`). |
+
+---
+
+## 📈 Training & Results
+
+### Training Command
+
+The model was trained using the Ultralytics Python API:
 
 ```python
+# Assuming model is initialized (model = YOLO(CFG.BASE_MODEL_WEIGHTS))
+
 model.train(
     data=os.path.join(CFG.OUTPUT_DIR, 'data.yaml'),
     task='detect',
     imgsz=(640, 640),
     epochs=CFG.EPOCHS,
     batch=CFG.BATCH_SIZE,
-    optimizer=CFG.OPTIMIZER,
-    lr0=CFG.LR,
-    lrf=CFG.LR_FACTOR,
-    weight_decay=CFG.WEIGHT_DECAY,
-    dropout=CFG.DROPOUT,
-    fraction=CFG.FRACTION,
-    patience=CFG.PATIENCE,
-    profile=CFG.PROFILE,
-    label_smoothing=CFG.LABEL_SMOOTHING,
     name=f'{CFG.BASE_MODEL}_{CFG.EXP_NAME}',
-    seed=CFG.SEED,
-    val=True,
-    amp=True,
-    exist_ok=True,
-    resume=False,
+    # ... other CFG parameters used ...
     device=0,
-    verbose=False,
-    project=None
+    val=True,
+    amp=True 
 )
 ```
 
-### Training Results:
-- Precision: 0.86892
-- Recall: 0.64027
-- mAP@50: 0.69028
-- mAP@50-95: 0.36963
+### Final Performance Metrics
+
+| Metric | Value | Interpretation |
+| :--- | :---: | :--- |
+| **Precision** | 0.869 | High ratio of true detections to total detections. |
+| **Recall** | 0.640 | Moderate coverage of all actual objects in the dataset. |
+| **mAP@50** | 0.690 | Mean Average Precision at IoU threshold of 50%. (Good overall performance) |
+| **mAP@50-95** | 0.370 | Mean Average Precision across IoU thresholds 50% to 95%. |
 
 ---
 
-## Visualization
-### Random Image Visualization:
-Display images randomly selected from the training dataset.
+## 🖼️ Visualization & Inference
+
+### Random Image Plotting (Validation Check)
+To visualize how labels correspond to the training data:
+
 ```python
 plot_random_images_from_folder(folder_path, num_images=20, seed=CFG.SEED)
 ```
 
-### Inference:
-Run inference on a single image:
+### Running Inference on an Image
+To detect objects on a specific file:
+
 ```python
 results = model.predict(
     source=example_image_path,
     conf=0.30,
     device="cuda",
     imgsz=(640, 640),
-    save=True,
-    save_txt=True,
-    save_conf=True,
+    save=True,        # Save output image with boxes
+    save_txt=True,    # Save text annotations
     exist_ok=True,
-    nms=True
 )
 ```
 
----
+⚙️ Setup & Requirements
+### Installation
+Ensure you have Python 3.8+ installed.
 
-## Requirements
-- **Python:** 3.8+
-- **Libraries:**
-  - ultralytics
-  - numpy
-  - pandas
-  - matplotlib
-  - seaborn
-  - opencv-python
-  - Pillow
-  - PyYAML
-
-Install dependencies:
 ```bash
 pip install -r requirements.txt
 ```
 
----
+## ⚙️ Dependencies
 
-## Hardware Used
-- NVIDIA GPU with CUDA support (GPU 0: NVIDIA GeForce RTX 3060 Laptop GPU (UUID: GPU-53a27a06-233d-07b9-fc18-a603ac868ab1))
-- CUDA version: 12.6.77
-- 16GB RAM or higher
-- Processor (Intel Core i9)
-
----
-
-## Outputs
-- Prediction results are saved in the `runs/detect/` directory.
-- Training logs and metrics are saved as `training_log_df.csv`.
-- Sample inference outputs (images/videos with detections) are provided in the `outputs/` directory.
+The primary libraries used are:
+* `ultralytics` (for YOLOv8)
+* `numpy`, `pandas`
+* `matplotlib`, `seaborn`
+* `opencv-python`
+* `Pillow`, `PyYAML`
 
 ---
 
-## Limitations
-- The model may struggle with:
-  - Detecting partially obscured PPE items.
-  - Low-light or visually complex environments.
-- Limited generalization for unseen environments without retraining.
+## 💻 Hardware
+
+* **GPU:** NVIDIA GeForce RTX 3060 Laptop GPU (CUDA version: 12.6.77)
+* **RAM:** 16GB or higher
+* **CPU:** Intel Core i9 (or equivalent)
 
 ---
 
-## Future Work
-- Expanding the dataset to include more diverse scenarios.
-- Improving recall and precision through advanced fine-tuning.
-- Integrating real-time deployment for industrial monitoring systems.
-- Adding additional PPE categories to enhance detection capabilities.
+## 📁 Outputs & Storage
+
+* **Prediction Results:** Saved in the `runs/detect/` directory (includes inferred images/videos).
+* **Training History:** Metrics are logged as `training_log_df.csv`.
+* **Sample Output:** Sample inference images and videos are found in the `outputs/` directory.
 
 ---
+
+## ⚠️ Limitations & Future Work
+
+### Current Limitations
+* The model's performance may degrade when detecting **partially obscured or small PPE items**.
+* Results are sensitive to **low-light conditions** or visually complex backgrounds not present in the training data.
+* **Generalization capability** for entirely new industrial environments is limited without transfer learning or re-training.
+
+### Next Steps & Future Work
+* **Dataset Expansion:** Add more images covering diverse lighting, angles, and environmental conditions.
+* **Performance Tuning:** Implement advanced techniques (e.g., TTA, model ensemble, hyperparameter search) to achieve target recall and precision levels.
+* **Real-time Deployment:** Integrate the model with a platform like Streamlit or Flask for real-time industrial monitoring systems with alerting capabilities.
