@@ -1,4 +1,4 @@
-# GIF Animation Generator (LangGraph + SDXL + ComfyUI)
+# ✨ GIF Animation Generator (LangGraph + SDXL + ComfyUI) 🏗️
 
 This project generates an animated GIF from a single text prompt using **LangGraph** for reasoning, OpenRouter for free LLMs, and ComfyUI + SDXL for local image generation.  
 
@@ -67,33 +67,48 @@ gif_animation_generator_langgraph/
 └── README.md
 ```
 
-## Installation
+---
+
+## ⚙️ Installation
 
 ### 1. Clone the repository
+```bash
+git clone [https://github.com/roxtj/Artificial-Intelligence.git](https://github.com/roxtj/Artificial-Intelligence.git)
+cd gif_animation_generator_langgraph
+```
 
-* git clone https://github.com/roxtj/Artificial-Intelligence.git
-* cd gif_animation_generator_langgraph
+## 2. Create a virtual environment
 
-### 2. Create a virtual environment
+```bash
+# Windows
 python -m venv .venv-gifgen
 .\.venv-gifgen\Scripts\activate
 
+# Linux/Mac
+python3 -m venv .venv-gifgen
+source .venv-gifgen/bin/activate
+```
+
 ### 3. Install dependencies
+```bash
 pip install -r requirements.txt
+```
 
-### Configure Environment Variables
-Create a .env file in the project root:
+### 4. Configure Environment Variables
 
+Create a `.env` file in the project root:
+
+```ini
 OPENROUTER_API_KEY=your_key_here
-
+```
 If the key is missing, the system automatically falls back to Ollama (local LLM).
 
 
-## ComfyUI Setup
+## 🔌ComfyUI Setup
 ### 1. Download ComfyUI
 Download and place it inside the project:
 
-```text
+```bash
 gif_animation_generator_langgraph/
 └── ComfyUI/
 ```
@@ -101,33 +116,36 @@ Repository link:
 https://github.com/comfyanonymous/ComfyUI
 
 
-### 2. Download Required SDXL Models - Huggingface
-Place these files under:
+### 2. Download Required SDXL Models
+Download the following models from [Hugging Face](https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0) and place them in:
+`gif_animation_generator_langgraph/ComfyUI/models/checkpoints/`
 
-ComfyUI/models/checkpoints/
-
-Required files:
-
-* sd_xl_base_1.0.safetensors
-* sd_xl_base_1.0_0.9vae.safetensors
-* sd_xl_refiner_1.0.safetensors
-* sd_xl_refiner_1.0_0.9vae.safetensors
+**Required Files:**
+* `sd_xl_base_1.0.safetensors`
+* `sd_xl_base_1.0_0.9vae.safetensors`
+* `sd_xl_refiner_1.0.safetensors`
+* `sd_xl_refiner_1.0_0.9vae.safetensors`
 
 ### 3. Add the Workflow File
-Place the workflow here:
-
-ComfyUI/workflows/workflow_api.json
+Ensure your specific workflow JSON is placed at:
+`ComfyUI/workflows/workflow_api.json`
 
 ### 4. Start ComfyUI
-1. cd ComfyUI
-2. python main.py
+Open a separate terminal window and run:
 
-ComfyUI must stay running while generating GIFs.
+```bash
+cd ComfyUI
+python main.py
+```
 
-## Running the Generator
+> **Important:** ComfyUI must stay running while generating GIFs.
+
+## 🚀 Running the Generator
 
 1. Run the generator script:
+```bash
 python main.py
+```
 
 2. You will be prompted:
 Enter your animation description:
@@ -135,7 +153,8 @@ Enter your animation description:
 3. The final GIF will be saved as:
 output.gif
 
-## Notes
-* The project automatically switches between OpenRouter and Ollama based on availability.
-* All image generation happens entirely locally via ComfyUI.
-* No paid services are required.
+## 📝 Notes
+
+* **Automatic Fallback:** The system automatically switches between OpenRouter and Ollama based on availability.
+* **Local Processing:** All image generation happens entirely locally via ComfyUI (requires a GPU with sufficient VRAM for SDXL).
+* **Cost:** No paid services are required.
