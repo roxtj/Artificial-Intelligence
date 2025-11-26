@@ -13,10 +13,9 @@ Navigate to the project you are interested in. Each folder contains its own `REA
 | Category | Description | Projects |
 | :--- | :--- | :--- |
 | **Generative AI** | Projects involving LLMs, Stable Diffusion (SDXL/SD3), ComfyUI workflows, and creative content generation. | [`GIF-Animation-Generator`](/gif_animation_generator_langgraph) |
+| **Computer Vision** | Solutions for object detection (YOLO), image classification, and visual analysis for real-world applications. | [`YOLOv8-PPE-Detection`](/yolov8_ppe_detection_project) |
 | **Agentic AI** | Multi-step workflows using LangChain/LangGraph, planning, tool-calling, and autonomous agents. | [Placeholder Link 1] |
-| **Traditional ML** | Classic Machine Learning models, Deep Learning (PyTorch/TensorFlow), and data science explorations. | [Placeholder Link 2] |
 | **LLM & RAG** | Experiments focused on Retrieval-Augmented Generation (RAG) and prompt engineering techniques. | [Placeholder Link 3] |
-
 ---
 
 ## 🚀 Purpose & Motivation
@@ -33,6 +32,7 @@ Navigate to the project you are interested in. Each folder contains its own `REA
 | :--- | :--- |
 | **Language & Core** | Python, Bash, Docker |
 | **GenAI/LLMs** | LangChain / LangGraph, OpenAI/Gemini/Claude APIs, Hugging Face Models |
+| **Computer Vision** | **YOLOv8**, **Ultralytics**, OpenCV-Python |
 | **Image Generation** | Stable Diffusion (SDXL/SD3), ComfyUI, Gradio |
 | **Data & ML** | NumPy, Pandas, Scikit-learn, TensorFlow / PyTorch |
 
@@ -64,3 +64,4 @@ Found a bug, have a suggestion, or want to add your own experiment?
 ## 📌 Disclaimer & License
 
 > These projects are primarily for educational and portfolio purposes. Some models and datasets may be adapted from public open-source materials and are credited in their respective project folders.
+
