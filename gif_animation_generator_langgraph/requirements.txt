@@ -1,0 +1,9 @@
+langgraph
+langchain-openai
+langchain-core
+openai
+pillow
+ipython
+aiohttp
+python-dotenv
+langchain-community

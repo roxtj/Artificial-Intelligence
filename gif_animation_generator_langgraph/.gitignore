@@ -1,0 +1,14 @@
+ComfyUI/
+*.safetensors
+*.ckpt
+*.pt
+*.pth
+models/
+output/
+.env
+.venv-gifgen/
+venv/
+__pycache__/
+*.pyc
+.DS_Store
+*.log
