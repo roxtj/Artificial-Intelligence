@@ -130,6 +130,9 @@ Download the following models from [Hugging Face](https://huggingface.co/stabili
 Ensure your specific workflow JSON is placed at:
 `ComfyUI/workflows/workflow_api.json`
 
+or Move the file(workflow_api.json from src) to:
+`ComfyUI/workflows/workflow_api.json`
+
 ### 4. Start ComfyUI
 Open a separate terminal window and run:
 
