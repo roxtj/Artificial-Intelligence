@@ -1,80 +1,78 @@
 # GIF Animation Generator (LangGraph + SDXL + ComfyUI)
 
-This project generates an animated GIF from a single text prompt using LangGraph for reasoning, OpenRouter for free LLMs, and ComfyUI + SDXL for local image generation.  
+This project generates an animated GIF from a single text prompt using **LangGraph** for reasoning, OpenRouter for free LLMs, and ComfyUI + SDXL for local image generation.  
 
-It is built as a fully free alternative to using OpenAI GPT-4o + DALL·E 3.
-
----
-
-## What This Project Does
-
-From a single text prompt, the system automatically generates:
-
-- A detailed character description  
-- A 5-step animation storyline  
-- Five SDXL image prompts  
-- Five SDXL images (via ComfyUI)  
-- A final animated GIF  
+It is designed as a **fully free alternative** to using OpenAI GPT-4o + DALL·E 3.
 
 ---
 
-## Why This Project Exists
+## 📖 What This Project Does
 
-Normally, the easiest method to generate consistent animated frames is: 
+From a single text prompt, the system automatically creates:
 
-OpenAI GPT-4o → DALL·E 3 → GIF export
+1.  **Character Description:** A detailed visual profile of the subject.
+2.  **Storyline:** A coherent 5-step animation sequence.
+3.  **Image Prompts:** Five optimized SDXL prompts based on the storyline.
+4.  **Image Generation:** Five high-quality images generated locally via ComfyUI.
+5.  **Final Animation:** Combines the frames into a smooth `output.gif`.
 
-But DALL·E 3 requires an OpenAI paid subscription.
+---
 
-Because this project avoids any paid services, it uses a **completely free** pipeline:
+## 💡 Why This Project Exists
 
-- **OpenRouter** (free-tier LLMs)
-- **ComfyUI** (fully free + local image generation)
-- **SDXL** (high-quality open-source model)
-- **LangGraph** (orchestration & reasoning)
+Traditionally, generating consistent animated frames requires a paid stack:
+> OpenAI GPT-4o → DALL·E 3 → GIF export
+
+This project bypasses subscription costs by using a **completely free pipeline**:
+
+* **OpenRouter:** Access to free-tier LLMs (or fallback to Ollama).
+* **ComfyUI:** Fully free, local node-based image generation.
+* **SDXL:** High-quality open-source stable diffusion model.
+* **LangGraph:** Advanced orchestration and state management.
 
 This achieves consistent multi-frame generation with **zero cost** and **full local control**.
 
 ---
 
-## Example Output
+## 🎨 Example Output
 
-**Prompt used:** : A small cute baby dragon sitting by a fireplace reading a book, warm cozy lighting, magical floating sparks.
+**Prompt used:**
+> "A small cute baby dragon sitting by a fireplace reading a book, warm cozy lighting, magical floating sparks."
 
-**Generated GIF:**
 ![Generated GIF](output.gif)
 
-
 ---
 
-## Project Structure
+## 📂 Project Structure
 
+```text
 gif_animation_generator_langgraph/
 │
-├─ src/
-│ ├─ graph_nodes.py
-│ ├─ graph_state.py
-│ ├─ graph_workflow.py
-│ ├─ image_utils.py
-│ ├─ runner.py
-│ └─ init.py
+├── src/
+│   ├── __init__.py
+│   ├── graph_nodes.py    # Logic for individual LangGraph nodes
+│   ├── graph_state.py    # State definition (TypedDict)
+│   ├── graph_workflow.py # Graph construction and compilation
+│   ├── image_utils.py    # Helper functions for handling images
+│   └── runner.py         # Main execution logic called by main.py
 │
-├─ ComfyUI/ # Local installation (ignored in Git)
+├── ComfyUI/              # Local installation (ignored in Git)
+│   ├── models/
+│   └── ...
 │
-├─ main.py
-├─ .env
-├─ .gitignore
-├─ requirements.txt
-└─ README.md
-
----
+├── main.py               # Entry point
+├── .env                  # API Keys
+├── .gitignore
+├── requirements.txt
+└── README.md
+```
 
 ## Installation
 
 ### 1. Clone the repository
 
-git clone https://github.com/roxtj/Artificial-Intelligence.git
-cd gif_animation_generator_langgraph
+* git clone https://github.com/roxtj/Artificial-Intelligence.git
+* cd gif_animation_generator_langgraph
 
 ### 2. Create a virtual environment
 python -m venv .venv-gifgen
@@ -95,9 +93,10 @@ If the key is missing, the system automatically falls back to Ollama (local LLM)
 ### 1. Download ComfyUI
 Download and place it inside the project:
 
+```text
 gif_animation_generator_langgraph/
 └── ComfyUI/
-
+```
 Repository link:
 https://github.com/comfyanonymous/ComfyUI
 
@@ -109,10 +108,10 @@ ComfyUI/models/checkpoints/
 
 Required files:
 
-sd_xl_base_1.0.safetensors
-sd_xl_base_1.0_0.9vae.safetensors
-sd_xl_refiner_1.0.safetensors
-sd_xl_refiner_1.0_0.9vae.safetensors
+* sd_xl_base_1.0.safetensors
+* sd_xl_base_1.0_0.9vae.safetensors
+* sd_xl_refiner_1.0.safetensors
+* sd_xl_refiner_1.0_0.9vae.safetensors
 
 ### 3. Add the Workflow File
 Place the workflow here:
